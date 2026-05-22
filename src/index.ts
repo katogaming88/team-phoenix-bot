@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { Client, GatewayIntentBits, EmbedBuilder, TextChannel } from 'discord.js';
 import express, { Request, Response } from 'express';
 
