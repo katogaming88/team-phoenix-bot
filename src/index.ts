@@ -116,7 +116,9 @@ async function fetchTextChannel(res: Response): Promise<TextChannel | null> {
 
 interface MplusBody {
   characterName?: string;
+  nameRealm?: string;
   mplusLink?: string;
+  raiderioUrl?: string;
   raidLink?: string;
   notes?: string;
   submittedAt?: string;
@@ -125,11 +127,14 @@ interface MplusBody {
 app.post('/mplus', async (req: Request, res: Response): Promise<void> => {
   if (!checkSecret(req, res)) return;
 
-  const { characterName, mplusLink, raidLink, notes, submittedAt } =
+  const { characterName, nameRealm, mplusLink, raiderioUrl, raidLink, notes, submittedAt } =
     req.body as MplusBody;
 
-  if (!characterName || !mplusLink) {
-    res.status(400).json({ error: 'Missing required fields: characterName, mplusLink' });
+  const playerName = nameRealm || characterName;
+  const profileUrl = raiderioUrl || mplusLink;
+
+  if (!playerName || !profileUrl) {
+    res.status(400).json({ error: 'Missing required fields' });
     return;
   }
 
@@ -144,10 +149,10 @@ app.post('/mplus', async (req: Request, res: Response): Promise<void> => {
     .setColor(0x9b59b6)
     .setTitle('New M+ Exclusion Request')
     .addFields(
-      { name: 'Character Name', value: characterName },
+      { name: 'Player', value: playerName },
       { name: 'Submitted At', value: `<t:${unixTs}:f>` },
-      { name: 'M+ Droptimizer/QE Report', value: mplusLink },
-      { name: 'Raid Droptimizer', value: raidLink ?? 'N/A' },
+      { name: 'Raider.io / Profile', value: profileUrl },
+      ...(raidLink ? [{ name: 'Raid Droptimizer', value: raidLink }] : []),
       { name: 'Notes', value: notes ?? '*(none)*' },
     )
     .setFooter({ text: 'M+ Exclusion Request System' });
