@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { Client, GatewayIntentBits, EmbedBuilder, TextChannel, REST, Routes, SlashCommandBuilder } from 'discord.js';
+import { Client, GatewayIntentBits, EmbedBuilder, TextChannel, REST, Routes, SlashCommandBuilder, MessageFlags } from 'discord.js';
 import express, { Request, Response } from 'express';
 
 const rawToken = process.env.DISCORD_BOT_TOKEN;
@@ -207,7 +207,7 @@ client.on('interactionCreate', async (interaction) => {
   // ── /resend ──────────────────────────────────────────────────────────────
   if (cmd === 'resend') {
     if (!APPS_SCRIPT_URL) {
-      await interaction.reply({ content: 'APPS_SCRIPT_URL is not configured.', ephemeral: true }).catch(() => null);
+      await interaction.reply({ content: 'APPS_SCRIPT_URL is not configured.', flags: MessageFlags.Ephemeral }).catch(() => null);
       return;
     }
     const count = interaction.options.getInteger('count', true);
@@ -235,12 +235,12 @@ client.on('interactionCreate', async (interaction) => {
 
   // All remaining commands are ephemeral officer queries
   if (!ROSTER_SCRIPT_URL) {
-    await interaction.reply({ content: 'ROSTER_SCRIPT_URL is not configured.', ephemeral: true }).catch(() => null);
+    await interaction.reply({ content: 'ROSTER_SCRIPT_URL is not configured.', flags: MessageFlags.Ephemeral }).catch(() => null);
     return;
   }
 
   try {
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
   } catch {
     return;
   }
