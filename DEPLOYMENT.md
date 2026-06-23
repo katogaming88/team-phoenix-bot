@@ -49,5 +49,6 @@ Each clone has its own `.env` file. Key differences between the two:
 - `DISCORD_BOT_TOKEN` — different bot token per server
 - `DISCORD_CHANNEL_ID` — different channel per server
 - `DISCORD_GUILD_ID` — team-phoenix: `1333287434473177109`, team-hellfire-rollers: `1329669121733951581`
-- `APPS_SCRIPT_URL` — different Apps Script deployment per server
+- `APPS_SCRIPT_URL` — different Apps Script deployment per server (M+ Exclusion Form script, used by /resend)
+- `ROSTER_SCRIPT_URL` — URL of the deployed WGA Raid Hub Apps Script web app (used by roster slash commands)
 - `PORT` — team-phoenix omitted (defaults to 3000), team-hellfire-rollers: `3001`
